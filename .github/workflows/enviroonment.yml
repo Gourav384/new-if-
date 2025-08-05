@@ -1,0 +1,58 @@
+name: environment variable
+on:
+    push:
+        branches:
+            - master
+env:
+    CONFIDENTIAL_NAME: ${{ secrets.CONFIDENTIAL_NAME }}
+    CONFIDENTIAL_USERID: ${{ secrets.CONFIDENTIAL_USERID }}
+    CONFIDENTIAL_PASSWORD: "Learner@123"    
+jobs:
+    first_job:
+        runs-on: ubuntu-latest
+        outputs: 
+            first_output: ${{ steps.puboutput.outputs.outputis }}
+        steps:
+            - name: first job
+              run: echo "first job running"
+            - name: output
+              id: puboutput
+              run: echo " outputis=keep learning " >> $GITHUB_OUTPUT
+            - name: upload artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                name: otput
+                path: |
+                    dependency
+    Second_job:
+        needs: first_job 
+        runs-on: ubuntu-latest
+        steps:
+#            - name: download artifacts
+#             uses: actions/download-artifact@v4
+#              with:
+#                name: otput
+#            - name: listing the files
+#              run: ls
+            - name: Failing action
+              id: fail
+              run: echo--echo
+            - name: showing the output
+              if: failure() && steps.fail.outcome == 'failure'
+              run: echo ${{needs.first_job.outputs.first_output}}
+            - name: finishing
+              run: echo "finishing job"
+
+
+#environment variables concept
+    Third_job:
+        needs: Second_job
+        runs-on: ubuntu-latest
+        steps:
+            - name: calling first environment variable
+              run: echo "name= $CONFIDENTIAL_NAME"
+            - name: calling second environment variable
+              run: echo "name= $CONFIDENTIAL_USERID"
+            
+
+                    
