@@ -53,6 +53,16 @@ jobs:
               run: echo "name= $CONFIDENTIAL_NAME"
             - name: calling second environment variable
               run: echo "name= $CONFIDENTIAL_USERID"
+
+
+#if any job fails run the below:
+    fail:
+        if: failure()
+        runs-on: ubuntu-latest
+        steps:
+            - name: if job fails
+              run: echo "one of the job failed"
+            
             
 
                     
