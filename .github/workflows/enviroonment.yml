@@ -37,8 +37,8 @@ jobs:
             - name: Failing action
               id: fail
               run: echo--echo
+              continue-on-error: true
             - name: showing the output
-              if: failure() && steps.fail.outcome == 'failure'
               run: echo ${{needs.first_job.outputs.first_output}}
             - name: finishing
               run: echo "finishing job"
